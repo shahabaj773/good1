@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
 import './style.css';
 const Signup = () => {
   const [name, setname] = useState('');
@@ -19,23 +18,19 @@ const Signup = () => {
       setotpform('true');
     }
   };
-  const handleoptsubmit = async () => {
-    const res = await axios.post('/otp', {
+  const handleoptsubmit = async (e) => {
+    e.preventDefault();
+    const response = await axios.post('/otp', {
       name: name,
       password: password,
       email: email,
       mobile: mobile,
       otp: otp,
     });
-    if (res.data === 'success') {
-      const notify = () => toast('your data successfully stored in database');
-      return (
-        <div>
-          <button onClick={notify}>Success</button>
-          <ToastContainer />
-        </div>
-      );
+    if (response.data === 'success') {
+      window.location.href = '/userpanel';
     } else {
+      console.log('no');
     }
   };
   return (
@@ -83,7 +78,7 @@ const Signup = () => {
           <form>
             <lable>Enter your otp</lable>
             <input type="number" onChange={(e) => setotp(e.target.value)} />
-            <button onSubmit={handleoptsubmit}>Submit</button>
+            <button onClick={handleoptsubmit}>Submit</button>
           </form>
         </>
       )}

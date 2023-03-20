@@ -1,0 +1,11 @@
+.button_chekbox {
+  height: 20px;
+  width: 10px;
+  radius: 3px;
+}
+.button_chekbox_checked {
+  height: 20px;
+  width: 10px;
+  radius: 3px;
+  background-color: blue;
+}

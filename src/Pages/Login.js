@@ -2,30 +2,37 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './style.css';
 const Login = () => {
-  const [name, setname] = useState('');
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
-  const [mobile, setMobile] = useState('');
   const handlesubmit = async (e) => {
     e.preventDefault();
-    const res = await axios.post('/login', {
-      name: name,
-      password: password,
-      email: email,
-      mobile: mobile,
-    });
+    const res = await axios.post(
+      '/login',
+      {
+        password: password,
+        email: email,
+      },
+      {
+        withCredentials: true,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    if (res.data) {
+      if (res.data.isAdmin === true) {
+        window.location.href = '/adminpanel';
+      } else {
+        window.location.href = '/userpanel';
+      }
+    } else {
+      console.log('error');
+    }
   };
   return (
     <>
       <form>
-        <label>Name</label>
-        <input
-          type="text"
-          placeholder="Enter Your Name"
-          onChange={(e) => {
-            setname(e.target.value);
-          }}
-        ></input>
         <label>Email</label>
         <input
           type="email"
@@ -40,14 +47,6 @@ const Login = () => {
           placeholder="Enter Your Password"
           onChange={(e) => {
             setpassword(e.target.value);
-          }}
-        ></input>
-        <label>Mobile no</label>
-        <input
-          type="number"
-          placeholder="Enter Your Mobile no"
-          onChange={(e) => {
-            setMobile(e.target.value);
           }}
         ></input>
 
