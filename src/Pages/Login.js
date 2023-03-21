@@ -24,7 +24,7 @@ const Login = () => {
       if (res.data.isAdmin === true) {
         window.location.href = '/adminpanel';
       } else {
-        window.location.href = '/userpanel';
+        window.location.href = '/';
       }
     } else {
       console.log('error');

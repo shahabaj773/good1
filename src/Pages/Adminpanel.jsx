@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 export const Adminpanel = () => {
   const [usersdata, setusersdata] = useState([]);
   const [admin, setadmin] = useState([]);
@@ -42,6 +43,7 @@ export const Adminpanel = () => {
 
   return (
     <div>
+      <a href="/profile">Profile</a>
       {admin.length !== 0 && (
         <table>
           <tr>
@@ -51,16 +53,40 @@ export const Adminpanel = () => {
             <th>password</th>
             <th>role</th>
           </tr>
-          {usersdata.map((u) => (
+          {usersdata.slice(0, 10).map((u) => (
+            // function prepareList() {
+            //   for (count = 0; count < 100; count++)
+            //   //add iteration elements to an array
+            //   createPages= getPageNumber();//user defined function
+            //   }
+
+            //             function preparePages() {
+            //               var start= ((presentPage - 1) * countPerEachPage);
+            //               var end = start+ countPerEachPage;
+            //               listPage= list.slice(start, end);
             <tr>
               <td>{u.name}</td>
+
               <td>{u.email}</td>
               <td>{u.mobile}</td>
-              <td>{u.password}</td>
               <td>
                 <button value={u._id} onClick={handleremoveuser}>
                   Remove user
                 </button>
+                <Popup trigger={<button>View Todo</button>} modal nested>
+                  {(close) => (
+                    <div className="modal">
+                      <div className="content">
+                        {u.todo.map((t) => (
+                          <div>{t.todo}</div>
+                        ))}
+                      </div>
+                      <div>
+                        <button onClick={() => close()}>Close modal</button>
+                      </div>
+                    </div>
+                  )}
+                </Popup>
               </td>
             </tr>
           ))}

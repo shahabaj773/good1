@@ -1,3 +1,4 @@
+//imports
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import './style.css';
@@ -19,8 +20,11 @@ export const Userpanel = () => {
       if (res.data === 'error') {
         window.location.href = '/login';
       } else {
-        setuser(res.data);
-        console.log(res.data.todo);
+        if (res.data.isAdmin === true) {
+          window.location.href = '/adminpanel';
+        } else {
+          setuser(res.data);
+        }
         settodoarray(res.data.todo);
       }
     };
@@ -50,9 +54,20 @@ export const Userpanel = () => {
       window.location.reload();
     }
   };
-  const handlecheck = async () => {};
+  const handlecheck = async (e) => {
+    e.preventDefault();
+
+    const res = await axios.post('/update/todo/completed', {
+      id: user._id,
+      todo: e.target.value,
+    });
+    if (res.data === 'updated') {
+      window.location.reload();
+    }
+  };
   return (
     <div>
+      <a href="/profile">Profile</a>
       {user.name}
       <form>
         <label>Title:</label>
@@ -72,6 +87,7 @@ export const Userpanel = () => {
         {todoarray.map((t) => (
           <>
             <button
+              value={t.todo}
               className={
                 t.completed === 'false'
                   ? 'button_chekbox'
@@ -83,7 +99,7 @@ export const Userpanel = () => {
             <button value={t} onClick={handletodoupdate}>
               Edit
             </button>
-            <button value={t} onClick={handletododelete}>
+            <button value={t.todo} onClick={handletododelete}>
               Delete
             </button>
           </>

@@ -28,7 +28,7 @@ const Signup = () => {
       otp: otp,
     });
     if (response.data === 'success') {
-      window.location.href = '/userpanel';
+      window.location.href = '/';
     } else {
       console.log('no');
     }
